@@ -1,9 +1,9 @@
 class Game
-  attr_reader :current_turn
+  attr_reader :current_player
 
   def initialize(player_1, player_2)
     @players = [player_1, player_2]
-    @current_turn = player_1
+    @current_player = player_1
   end
 
   def player_1
@@ -19,11 +19,19 @@ class Game
   end
 
   def switch
-    @current_turn = opponent_of(current_turn)
+    @current_player = opponent_of(current_player)
+  end
+
+  def opponent
+    opponent_of(@current_player)
   end
 
   def opponent_of(the_player)
     @players.reject { |player| player == the_player }.first
+  end
+
+  def over?
+    @players.any? { |player| player.hit_points == 0 }
   end
 
   private

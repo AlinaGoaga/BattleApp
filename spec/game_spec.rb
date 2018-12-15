@@ -25,9 +25,15 @@ describe Game do
     end
   end
 
-  describe '#current_turn' do
+  describe '#current_player' do
     it 'starts as player 1' do
-      expect(game.current_turn).to eq player_1
+      expect(game.current_player).to eq player_1
+    end
+  end
+
+  describe '#opponent' do
+    it 'displays the current player\'s opponent' do
+      expect(game.opponent).to eq player_2
     end
   end
 
@@ -41,6 +47,36 @@ describe Game do
   describe '#switch' do
     it 'switches the player' do
       expect(game.switch).to eq player_2
+    end
+
+    it 'switches the current player' do
+      game.switch
+      expect(game.current_player).to eq player_2
+    end
+
+    it 'switches the opponent' do
+      game.switch
+      expect(game.opponent).to eq player_1
+    end
+  end
+
+  describe '#game over' do
+    it 'stops the game when one of the players is at 0 HP' do
+      allow(player_1).to receive(:hit_points).and_return 10
+      allow(player_2).to receive(:hit_points).and_return 0
+      expect(game.over?).to eq true
+    end
+
+    it 'stops the game when one of the players is at 0 HP' do
+      allow(player_1).to receive(:hit_points).and_return 0
+      allow(player_2).to receive(:hit_points).and_return 10
+      expect(game.over?).to eq true
+    end
+
+    it 'stops the game when one of the players is at 0 HP' do
+      allow(player_1).to receive(:hit_points).and_return 20
+      allow(player_2).to receive(:hit_points).and_return 10
+      expect(game.over?).to eq false
     end
   end
 end
